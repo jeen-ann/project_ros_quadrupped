@@ -1,0 +1,276 @@
+<?xml version="1.0"?>
+<robot name="quadruped_robot_project">
+	<link name="base_body_link">
+		<visual>
+			<geometry>
+				<mesh filename="package://quadruped_robot_description/models/meshes/body_rev04.dae" />
+			</geometry>
+		</visual>
+	</link>
+	<link name="right_front_shoulder_link">
+		<visual>
+			<geometry>
+				<mesh filename="package://quadruped_robot_description/models/meshes/shoulder_rev01.dae"/>
+			</geometry>
+			<origin rpy="4.71225 0 0" xyz="0 0 0"/>
+		</visual>
+	</link>
+	<joint name="right_front_shoulder_joint" type="fixed">
+		<parent link="base_body_link"/>
+		<child link="right_front_shoulder_link"/>
+		<origin xyz="0.15 -0.2 0.05" rpy="0 0 0" />
+	</joint>
+	<link name="right_front_thigh_link">
+		<visual>
+			<geometry>
+				<mesh filename="package://quadruped_robot_description/models/meshes/thigh_rev01.dae"/>
+			</geometry>
+			<origin rpy="1.57075 0 0" xyz="0.08 -0.028 -0.11"/>
+		</visual>
+	</link>
+	<joint name="right_front_elbow_joint" type="revolute">
+		<axis xyz="1 0 0"/>
+		<limit effort="1000.0" lower="-1.5" upper="1.5" velocity="0.5"/>
+		<parent link="right_front_shoulder_link"/>
+		<child link="right_front_thigh_link"/>
+		<origin xyz="0 -0.149 0.002" rpy="0 0 0" />
+	</joint>
+	<link name="right_front_shank_link">
+		<visual>
+			<geometry>
+				<mesh filename="package://quadruped_robot_description/models/meshes/shank_rev01.dae"/>
+			</geometry>
+			<origin rpy="1.57075 0 0" xyz="0.03 -0.02 -0.103"/>
+		</visual>
+	</link>
+	<joint name="right_front_wrist_joint" type="revolute">
+		<axis xyz="1 0 0"/>
+		<limit effort="1000.0" lower="-3.0" upper="3.0" velocity="0.5"/>
+		<parent link="right_front_thigh_link"/>
+		<child link="right_front_shank_link"/>
+		<origin xyz="0.1 0 -0.262"/>
+	</joint>
+	<link name="right_front_foot_link">
+		<visual>
+			<geometry>
+				<mesh filename="package://quadruped_robot_description/models/meshes/foot_rev01.dae"/>
+			</geometry>
+			<origin rpy="1.57075 0 0" xyz="0.0315 -0.025 -0.247"/>
+		</visual>
+	</link>
+	<joint name="right_front_foot_joint" type="fixed">
+		<parent link="right_front_shank_link"/>
+		<child link="right_front_foot_link"/>
+		<origin xyz="0 0 0" rpy="0 0 0" />
+	</joint>
+
+
+
+
+
+
+
+
+
+
+
+
+	<link name="right_back_shoulder_link">
+		<visual>
+			<geometry>
+				<mesh filename="package://quadruped_robot_description/models/meshes/shoulder_rev01.dae"/>
+			</geometry>
+			<origin rpy="1.57075 0 0" xyz="0 0 0"/>
+		</visual>
+	</link>
+	<joint name="right_back_shoulder_joint" type="fixed">
+		<parent link="base_body_link"/>
+		<child link="right_back_shoulder_link"/>
+		<origin xyz="0.15 0.2 0.05" rpy="0 0 0" />
+	</joint>
+	<link name="right_back_thigh_link">
+		<visual>
+			<geometry>
+				<mesh filename="package://quadruped_robot_description/models/meshes/thigh_rev01.dae"/>
+			</geometry>
+			<origin rpy="1.57075 0 0" xyz="0.08 -0.028 -0.11"/>
+		</visual>
+	</link>
+	<joint name="right_back_elbow_joint" type="revolute">
+		<axis xyz="1 0 0"/>
+		<limit effort="1000.0" lower="-1.5" upper="1.5" velocity="0.5"/>
+		<parent link="right_back_shoulder_link"/>
+		<child link="right_back_thigh_link"/>
+		<origin xyz="0 0.149 0.002" rpy="0 0 0" />
+	</joint>
+	<link name="right_back_shank_link">
+		<visual>
+			<geometry>
+				<mesh filename="package://quadruped_robot_description/models/meshes/shank_rev01.dae"/>
+			</geometry>
+			<origin rpy="1.57075 0 0" xyz="0.03 -0.02 -0.103"/>
+		</visual>
+	</link>
+	<joint name="right_back_wrist_joint" type="revolute">
+		<axis xyz="1 0 0"/>
+		<limit effort="1000.0" lower="-3.0" upper="3.0" velocity="0.5"/>
+		<parent link="right_back_thigh_link"/>
+		<child link="right_back_shank_link"/>
+		<origin xyz="0.1 0 -0.262"/>
+	</joint>
+	<link name="right_back_foot_link">
+		<visual>
+			<geometry>
+				<mesh filename="package://quadruped_robot_description/models/meshes/foot_rev01.dae"/>
+			</geometry>
+			<origin rpy="1.57075 0 0" xyz="0.0315 -0.025 -0.247"/>
+		</visual>
+	</link>
+	<joint name="right_back_foot_joint" type="fixed">
+		<parent link="right_back_shank_link"/>
+		<child link="right_back_foot_link"/>
+		<origin xyz="0 0 0" rpy="0 0 0" />
+	</joint>
+
+
+
+
+
+
+
+
+	<link name="left_back_shoulder_link">
+		<visual>
+			<geometry>
+				<mesh filename="package://quadruped_robot_description/models/meshes/shoulder_rev01.dae"/>
+			</geometry>
+			<origin rpy="4.71225 3.1415 0" xyz="0 0 0"/>
+		</visual>
+	</link>
+	<joint name="left_back_shoulder_joint" type="fixed">
+		<parent link="base_body_link"/>
+		<child link="left_back_shoulder_link"/>
+		<origin xyz="-0.15 -0.2 0.05" rpy="0 0 0" />
+	</joint>
+	<link name="left_back_thigh_link">
+		<visual>
+			<geometry>
+				<mesh filename="package://quadruped_robot_description/models/meshes/thigh_rev01.dae"/>
+			</geometry>
+			<origin rpy="1.57075 0 3.1415" xyz="-0.08 0.028 -0.11"/>
+		</visual>
+	</link>
+	<joint name="left_back_elbow_joint" type="revolute">
+		<axis xyz="1 0 0"/>
+		<limit effort="1000.0" lower="-1.5" upper="1.5" velocity="0.5"/>
+		<parent link="left_back_shoulder_link"/>
+		<child link="left_back_thigh_link"/>
+		<origin xyz="0 -0.149 0.002" rpy="0 0 0" />
+	</joint>
+	<link name="left_back_shank_link">
+		<visual>
+			<geometry>
+				<mesh filename="package://quadruped_robot_description/models/meshes/shank_rev01.dae"/>
+			</geometry>
+			<origin rpy="1.57075 0 3.1415" xyz="-0.03 0.02 -0.103"/>
+		</visual>
+	</link>
+	<joint name="left_back_wrist_joint" type="revolute">
+		<axis xyz="1 0 0"/>
+		<limit effort="1000.0" lower="-3.0" upper="3.0" velocity="0.5"/>
+		<parent link="left_back_thigh_link"/>
+		<child link="left_back_shank_link"/>
+		<origin xyz="-0.1 0 -0.262"/>
+	</joint>
+	<link name="left_back_foot_link">
+		<visual>
+			<geometry>
+				<mesh filename="package://quadruped_robot_description/models/meshes/foot_rev01.dae"/>
+			</geometry>
+			<origin rpy="1.57075 0 0" xyz="-0.0315 -0.025 -0.247"/>
+		</visual>
+	</link>
+	<joint name="left_back_foot_joint" type="fixed">
+		<parent link="left_back_shank_link"/>
+		<child link="left_back_foot_link"/>
+		<origin xyz="0 0 0" rpy="0 0 0" />
+	</joint>
+	
+
+
+
+
+
+
+
+
+	<link name="left_front_shoulder_link">
+		<visual>
+			<geometry>
+				<mesh filename="package://quadruped_robot_description/models/meshes/shoulder_rev01.dae"/>
+			</geometry>
+			<origin rpy="1.57075 3.1415 0" xyz="0 0 0"/>
+		</visual>
+	</link>
+	<joint name="left_front_shoulder_joint" type="fixed">
+		<parent link="base_body_link"/>
+		<child link="left_front_shoulder_link"/>
+		<origin xyz="-0.15 0.2 0.05" rpy="0 0 0" />
+	</joint>
+	
+	
+	
+	
+	
+	
+	
+	<link name="left_front_thigh_link">
+		<visual>
+			<geometry>
+				<mesh filename="package://quadruped_robot_description/models/meshes/thigh_rev01.dae"/>
+			</geometry>
+			<origin rpy="1.57075 0 3.1415" xyz="-0.08 0.028 -0.11"/>
+		</visual>
+	</link>
+	<joint name="left_front_elbow_joint" type="revolute">
+		<axis xyz="1 0 0"/>
+		<limit effort="1000.0" lower="-1.5" upper="1.5" velocity="0.5"/>
+		<parent link="left_front_shoulder_link"/>
+		<child link="left_front_thigh_link"/>
+		<origin xyz="0 0.149 0.002" rpy="0 0 0" />
+	</joint>
+	<link name="left_front_shank_link">
+		<visual>
+			<geometry>
+				<mesh filename="package://quadruped_robot_description/models/meshes/shank_rev01.dae"/>
+			</geometry>
+			<origin rpy="1.57075 0 3.1415" xyz="-0.03 0.02 -0.103"/>
+		</visual>
+	</link>
+	<joint name="left_front_wrist_joint" type="revolute">
+		<axis xyz="1 0 0"/>
+		<limit effort="1000.0" lower="-3.0" upper="3.0" velocity="0.5"/>
+		<parent link="left_front_thigh_link"/>
+		<child link="left_front_shank_link"/>
+		<origin xyz="-0.1 0 -0.262"/>
+	</joint>
+	<link name="left_front_foot_link">
+		<visual>
+			<geometry>
+				<mesh filename="package://quadruped_robot_description/models/meshes/foot_rev01.dae"/>
+			</geometry>
+			<origin rpy="1.57075 0 0" xyz="-0.0315 -0.025 -0.247"/>
+		</visual>
+	</link>
+	<joint name="left_front_foot_joint" type="fixed">
+		<parent link="left_front_shank_link"/>
+		<child link="left_front_foot_link"/>
+		<origin xyz="0 0 0" rpy="0 0 0" />
+	</joint>
+
+
+
+
+
+</robot>
+
