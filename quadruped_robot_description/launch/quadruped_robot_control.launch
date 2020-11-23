@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+	<!-- Load joint controller configurations from YAML file to parameter server -->
+	<rosparam file="$(find quadruped_robot_description)/config/quadruped_robot_controller_rev00.yaml" command="load"/>
+	<!-- load the controllers -->
+	<node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen" ns="/quadruped_robot_project" args="right_front_elbow_joint_position_controller right_front_wrist_joint_position_controller right_back_elbow_joint_position_controller right_back_wrist_joint_position_controller left_back_elbow_joint_position_controller left_back_wrist_joint_position_controller left_front_elbow_joint_position_controller left_front_wrist_joint_position_controller joint_state_controller --shutdown-timeout 3"/>
+	<!-- convert joint states to TF transforms for rviz, etc -->
+	<node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="false" output="screen">
+		<remap from="/joint_states" to="/quadruped_robot_project/joint_states" />
+	</node>
+​
+</launch>
