@@ -1,0 +1,776 @@
+<?xml version="1.0"?>
+<robot name="quadruped_robot_project">
+
+
+	<gazebo>
+		<plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+			<robotNamespace>/quadruped_robot_project</robotNamespace>
+		</plugin>
+	</gazebo>
+
+	<link name="base_body_link">
+		<inertial>
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<mass value="50" />
+			<inertia ixx="505679.347712" ixy="0.000749922974" ixz="0.000758748779" iyy="120063.344640" iyz="0.023264822266" izz="601064.800256"/>
+		</inertial>
+		
+		<collision>
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<geometry>
+				<mesh filename="package://quadruped_project/models/meshes/body_rev04.dae" />
+			</geometry>
+		</collision>
+
+		<visual>
+			<origin rpy="0.0 0 0" xyz="0 0 0"/>
+			<geometry>
+				<mesh filename="package://quadruped_project/models/meshes/body_rev04.dae" />
+			</geometry>
+		</visual>
+	</link>
+
+	<gazebo reference="base_body_link">
+		<kp>10000000.0</kp>
+		<kd>10000000.0</kd>
+		<mu1>1000.0</mu1>
+		<mu2>1000.0</mu2>
+	</gazebo>
+
+	<link name="right_front_shoulder_link">
+
+		<inertial>
+			<origin rpy="4.71225 0 0" xyz="0 0 0"/>
+			<mass value="20" />
+			<inertia ixx="1370.901120" ixy="0.000000333347" ixz="7.898235" iyy="1090.581376" iyz="0.000001537936" izz="303.707648"/>
+		</inertial>
+		
+		<collision>
+			<origin rpy="4.71225 0 0" xyz="0 0 0"/>
+			<geometry>
+				<mesh filename="package://quadruped_project/models/meshes/shoulder_rev01.dae"/>
+			</geometry>
+		</collision>
+
+		<visual>
+			<geometry>
+				<mesh filename="package://quadruped_project/models/meshes/shoulder_rev01.dae"/>
+			</geometry>
+			<origin rpy="4.71225 0 0" xyz="0 0 0"/>
+		</visual>
+	</link>
+
+	<gazebo reference="right_front_shoulder_link">
+		<kp>10000000.0</kp>
+		<kd>10000000.0</kd>
+		<mu1>1000.0</mu1>
+		<mu2>1000.0</mu2>
+	</gazebo>
+
+	<joint name="right_front_shoulder_joint" type="fixed">
+		<parent link="base_body_link"/>
+		<child link="right_front_shoulder_link"/>
+		<origin xyz="0.15 -0.2 0.05" rpy="0 0 0" />
+	</joint>
+
+	<link name="right_front_thigh_link">
+		<inertial>
+			<origin rpy="1.57075 0 0" xyz="0.08 -0.028 -0.11"/>
+			<mass value="20" />
+			<inertia ixx="4243.598592" ixy="839.043008" ixz="0.003623758789" iyy="525.609024" iyz="0.006399090332" izz="4577.473536"/>
+		</inertial>
+		
+		<collision>
+			<origin rpy="1.57075 0 0" xyz="0.08 -0.028 -0.11"/>
+			<geometry>
+				<mesh filename="package://quadruped_project/models/meshes/thigh_rev01.dae"/>
+			</geometry>
+		</collision>		
+		<visual>
+			<geometry>
+				<mesh filename="package://quadruped_project/models/meshes/thigh_rev01.dae"/>
+			</geometry>
+			<origin rpy="1.57075 0 0" xyz="0.08 -0.028 -0.11"/>
+		</visual>
+	</link>
+	<gazebo reference="right_front_thigh_link">
+		<kp>10000000.0</kp>
+		<kd>10000000.0</kd>
+		<mu1>1000.0</mu1>
+		<mu2>1000.0</mu2>
+	</gazebo>
+
+	<joint name="rf_hip_joint" type="revolute">
+		<axis xyz="1 0 0"/>
+		<limit effort="1000.0" lower="-1.5" upper="1.5" velocity="5"/>
+		<parent link="right_front_shoulder_link"/>
+		<child link="right_front_thigh_link"/>
+		<origin xyz="0 -0.149 0.002" rpy="0 0 0" />
+	</joint>
+
+	<transmission name="right_front_tran1">
+		<type>transmission_interface/SimpleTransmission</type>
+		<joint name="rf_hip_joint">
+			<hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+		</joint>
+		<actuator name="right_front_motor1">
+			<mechanicalReduction>1</mechanicalReduction>
+		</actuator>
+	</transmission>
+
+	<link name="right_front_shank_link">
+		<inertial>
+			<origin rpy="1.57075 0 0" xyz="0.03 -0.02 -0.103"/>
+			<mass value="20" />
+			<inertia ixx="990.160768" ixy="24.015334" ixz="0.000000307513" iyy="23.989654" iyz="0.000018340973" izz="990.223104"/>
+		</inertial>
+		
+		<collision>
+			<origin rpy="1.57075 0 0" xyz="0.03 -0.02 -0.103"/>
+			<geometry>
+				<mesh filename="package://quadruped_project/models/meshes/shank_rev01.dae"/>
+			</geometry>
+		</collision>
+		<visual>
+			<geometry>
+				<mesh filename="package://quadruped_project/models/meshes/shank_rev01.dae"/>
+			</geometry>
+			<origin rpy="1.57075 0 0" xyz="0.03 -0.02 -0.103"/>
+		</visual>
+	</link>
+	<gazebo reference="right_front_shank_link">
+		<kp>10000000.0</kp>
+		<kd>10000000.0</kd>
+		<mu1>1000.0</mu1>
+		<mu2>1000.0</mu2>
+	</gazebo>
+	<joint name="rf_upper_leg_joint" type="revolute">
+		<axis xyz="1 0 0"/>
+		<limit effort="1000.0" lower="-3.0" upper="3.0" velocity="5"/>
+		<parent link="right_front_thigh_link"/>
+		<child link="right_front_shank_link"/>
+		<origin xyz="0.1 0 -0.262"/>
+	</joint>
+
+	<transmission name="right_front_tran2">
+		<type>transmission_interface/SimpleTransmission</type>
+		<joint name="rf_upper_leg_joint">
+			<hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+		</joint>
+		<actuator name="right_front_motor2">
+			<mechanicalReduction>1</mechanicalReduction>
+		</actuator>
+	</transmission>
+
+	<link name="right_front_foot_link">
+		<inertial>
+			<origin rpy="1.57075 0 0" xyz="0.0315 -0.025 -0.247"/>
+			<mass value="1" />
+			<inertia ixx="10.318125" ixy="0.000000002293" ixz="0.000001655262" iyy="6.1660505" iyz="0.000000009906" izz="6.1660535"/>
+		</inertial>
+		
+		<collision>
+			<origin rpy="1.57075 0 0" xyz="0.0315 -0.025 -0.247"/>
+			<geometry>
+				<mesh filename="package://quadruped_project/models/meshes/foot_rev01.dae"/>
+			</geometry>
+		</collision>
+
+		<visual>
+			<geometry>
+				<mesh filename="package://quadruped_project/models/meshes/foot_rev01.dae"/>
+			</geometry>
+			<origin rpy="1.57075 0 0" xyz="0.0315 -0.025 -0.247"/>
+		</visual>
+	</link>
+	<gazebo reference="right_front_foot_link">
+		<kp>10000000.0</kp>
+		<kd>10000000.0</kd>
+		<mu1>1000.0</mu1>
+		<mu2>1000.0</mu2>
+	</gazebo>
+	<joint name="right_front_foot_joint" type="fixed">
+		<parent link="right_front_shank_link"/>
+		<child link="right_front_foot_link"/>
+		<origin xyz="0 0 0" rpy="0 0 0" />
+	</joint>
+
+	<link name="right_back_shoulder_link">
+		<inertial>
+			<origin rpy="1.57075 0 0" xyz="0 0 0"/>
+			<mass value="20" />
+			<inertia ixx="1370.901120" ixy="0.000000333347" ixz="7.898235" iyy="1090.581376" iyz="0.000001537936" izz="303.707648"/>
+		</inertial>
+		
+		<collision>
+			<origin rpy="1.57075 0 0" xyz="0 0 0"/>
+			<geometry>
+				<mesh filename="package://quadruped_project/models/meshes/shoulder_rev01.dae"/>
+			</geometry>
+		</collision>
+		<visual>
+			<geometry>
+				<mesh filename="package://quadruped_project/models/meshes/shoulder_rev01.dae"/>
+			</geometry>
+			<origin rpy="1.57075 0 0" xyz="0 0 0"/>
+		</visual>
+	</link>
+	<gazebo reference="right_back_shoulder_link">
+		<kp>10000000.0</kp>
+		<kd>10000000.0</kd>
+		<mu1>1000.0</mu1>
+		<mu2>1000.0</mu2>
+	</gazebo>
+	<joint name="right_back_shoulder_joint" type="fixed">
+		<parent link="base_body_link"/>
+		<child link="right_back_shoulder_link"/>
+		<origin xyz="0.15 0.2 0.05" rpy="0 0 0" />
+	</joint>
+	<link name="right_back_thigh_link">
+		<inertial>
+			<origin rpy="1.57075 0 0" xyz="0.08 -0.028 -0.11"/>
+			<mass value="20" />
+			<inertia ixx="4243.598592" ixy="839.043008" ixz="0.003623758789" iyy="525.609024" iyz="0.006399090332" izz="4577.473536"/>
+		</inertial>
+		
+		<collision>
+			<origin rpy="1.57075 0 0" xyz="0.08 -0.028 -0.11"/>
+			<geometry>
+				<mesh filename="package://quadruped_project/models/meshes/thigh_rev01.dae"/>
+			</geometry>
+		</collision>
+		<visual>
+			<geometry>
+				<mesh filename="package://quadruped_project/models/meshes/thigh_rev01.dae"/>
+			</geometry>
+			<origin rpy="1.57075 0 0" xyz="0.08 -0.028 -0.11"/>
+		</visual>
+	</link>
+	<gazebo reference="right_back_thigh_link">
+		<kp>10000000.0</kp>
+		<kd>10000000.0</kd>
+		<mu1>1000.0</mu1>
+		<mu2>1000.0</mu2>
+	</gazebo>
+	<joint name="rh_hip_joint" type="revolute">
+		<axis xyz="1 0 0"/>
+		<limit effort="1000.0" lower="-1.5" upper="1.5" velocity="5"/>
+		<parent link="right_back_shoulder_link"/>
+		<child link="right_back_thigh_link"/>
+		<origin xyz="0 0.149 0.002" rpy="0 0 0" />
+	</joint>
+
+	<transmission name="right_back_tran1">
+		<type>transmission_interface/SimpleTransmission</type>
+		<joint name="rh_hip_joint">
+			<hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+		</joint>
+		<actuator name="right_back_motor1">
+			<mechanicalReduction>1</mechanicalReduction>
+		</actuator>
+	</transmission>
+
+
+	<link name="right_back_shank_link">
+		<inertial>
+			<origin rpy="1.57075 0 0" xyz="0.03 -0.02 -0.103"/>
+			<mass value="20" />
+			<inertia ixx="990.160768" ixy="24.015334" ixz="0.000000307513" iyy="23.989654" iyz="0.000018340973" izz="990.223104"/>
+		</inertial>
+		
+		<collision>
+			<origin rpy="1.57075 0 0" xyz="0.03 -0.02 -0.103"/>
+			<geometry>
+				<mesh filename="package://quadruped_project/models/meshes/shank_rev01.dae"/>
+			</geometry>
+		</collision>
+		<visual>
+			<geometry>
+				<mesh filename="package://quadruped_project/models/meshes/shank_rev01.dae"/>
+			</geometry>
+			<origin rpy="1.57075 0 0" xyz="0.03 -0.02 -0.103"/>
+		</visual>
+	</link>
+	<gazebo reference="right_back_shank_link">
+		<kp>10000000.0</kp>
+		<kd>10000000.0</kd>
+		<mu1>1000.0</mu1>
+		<mu2>1000.0</mu2>
+	</gazebo>
+	<joint name="rh_upper_leg_joint" type="revolute">
+		<axis xyz="1 0 0"/>
+		<limit effort="1000.0" lower="-3.0" upper="3.0" velocity="5"/>
+		<parent link="right_back_thigh_link"/>
+		<child link="right_back_shank_link"/>
+		<origin xyz="0.1 0 -0.262"/>
+	</joint>
+
+	<transmission name="right_back_tran2">
+		<type>transmission_interface/SimpleTransmission</type>
+		<joint name="rh_upper_leg_joint">
+			<hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+		</joint>
+		<actuator name="right_back_motor2">
+			<mechanicalReduction>1</mechanicalReduction>
+		</actuator>
+	</transmission>
+
+	<link name="right_back_foot_link">
+		<inertial>
+			<origin rpy="1.57075 0 0" xyz="0.0315 -0.025 -0.247"/>
+			<mass value="1" />
+			<inertia ixx="10.318125" ixy="0.000000002293" ixz="0.000001655262" iyy="6.1660505" iyz="0.000000009906" izz="6.1660535"/>
+		</inertial>
+		
+		<collision>
+			<origin rpy="1.57075 0 0" xyz="0.0315 -0.025 -0.247"/>
+			<geometry>
+				<mesh filename="package://quadruped_project/models/meshes/foot_rev01.dae"/>
+			</geometry>
+		</collision>
+		<visual>
+			<geometry>
+				<mesh filename="package://quadruped_project/models/meshes/foot_rev01.dae"/>
+			</geometry>
+			<origin rpy="1.57075 0 0" xyz="0.0315 -0.025 -0.247"/>
+		</visual>
+	</link>
+	<gazebo reference="right_back_foot_link">
+		<kp>10000000.0</kp>
+		<kd>10000000.0</kd>
+		<mu1>1000.0</mu1>
+		<mu2>1000.0</mu2>
+	</gazebo>
+
+	<joint name="right_back_foot_joint" type="fixed">
+		<parent link="right_back_shank_link"/>
+		<child link="right_back_foot_link"/>
+		<origin xyz="0 0 0" rpy="0 0 0" />
+	</joint>
+	<link name="left_back_shoulder_link">
+		<inertial>
+			<origin rpy="4.71225 3.1415 0" xyz="0 0 0"/>
+			<mass value="20" />
+			<inertia ixx="1370.901120" ixy="0.000000333347" ixz="7.898235" iyy="1090.581376" iyz="0.000001537936" izz="303.707648"/>
+		</inertial>
+		
+		<collision>
+			<origin rpy="4.71225 3.1415 0" xyz="0 0 0"/>
+			<geometry>
+				<mesh filename="package://quadruped_project/models/meshes/shoulder_rev01.dae"/>
+			</geometry>
+		</collision>
+
+		<visual>
+			<geometry>
+				<mesh filename="package://quadruped_project/models/meshes/shoulder_rev01.dae"/>
+			</geometry>
+			<origin rpy="4.71225 3.1415 0" xyz="0 0 0"/>
+		</visual>
+	</link>
+
+	<gazebo reference="left_back_shoulder_link">
+		<kp>10000000.0</kp>
+		<kd>10000000.0</kd>
+		<mu1>1000.0</mu1>
+		<mu2>1000.0</mu2>
+	</gazebo>
+
+	<joint name="left_back_shoulder_joint" type="fixed">
+		<parent link="base_body_link"/>
+		<child link="left_back_shoulder_link"/>
+		<origin xyz="-0.15 -0.2 0.05" rpy="0 0 0" />
+	</joint>
+	<link name="left_back_thigh_link">
+		<inertial>
+			<origin rpy="1.57075 0 3.1415" xyz="-0.08 0.028 -0.11"/>
+			<mass value="20" />
+			<inertia ixx="4243.598592" ixy="839.043008" ixz="0.003623758789" iyy="525.609024" iyz="0.006399090332" izz="4577.473536"/>
+		</inertial>
+		
+		<collision>
+			<origin rpy="1.57075 0 3.1415" xyz="-0.08 0.028 -0.11"/>
+			<geometry>
+				<mesh filename="package://quadruped_project/models/meshes/thigh_rev01.dae"/>
+			</geometry>
+		</collision>
+		<visual>
+			<geometry>
+				<mesh filename="package://quadruped_project/models/meshes/thigh_rev01.dae"/>
+			</geometry>
+			<origin rpy="1.57075 0 3.1415" xyz="-0.08 0.028 -0.11"/>
+		</visual>
+	</link>
+	<gazebo reference="left_back_thigh_link">
+		<kp>10000000.0</kp>
+		<kd>10000000.0</kd>
+		<mu1>1000.0</mu1>
+		<mu2>1000.0</mu2>
+	</gazebo>
+	<joint name="lh_hip_joint" type="revolute">
+		<axis xyz="1 0 0"/>
+		<limit effort="1000.0" lower="-1.5" upper="1.5" velocity="5"/>
+		<parent link="left_back_shoulder_link"/>
+		<child link="left_back_thigh_link"/>
+		<origin xyz="0 -0.149 0.002" rpy="0 0 0" />
+	</joint>
+
+	<transmission name="left_back_tran1">
+		<type>transmission_interface/SimpleTransmission</type>
+		<joint name="lh_hip_joint">
+			<hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+		</joint>
+		<actuator name="lh_hip_joint_motor">
+			<mechanicalReduction>1</mechanicalReduction>
+		</actuator>
+	</transmission>
+
+
+	<link name="left_back_shank_link">
+		<inertial>
+			<origin rpy="1.57075 0 3.1415" xyz="-0.03 0.02 -0.103"/>
+			<mass value="20" />
+			<inertia ixx="990.160768" ixy="24.015334" ixz="0.000000307513" iyy="23.989654" iyz="0.000018340973" izz="990.223104"/>
+		</inertial>
+		
+		<collision>
+			<origin rpy="1.57075 0 3.1415" xyz="-0.03 0.02 -0.103"/>
+			<geometry>
+				<mesh filename="package://quadruped_project/models/meshes/shank_rev01.dae"/>
+			</geometry>
+		</collision>
+		<visual>
+			<geometry>
+				<mesh filename="package://quadruped_project/models/meshes/shank_rev01.dae"/>
+			</geometry>
+			<origin rpy="1.57075 0 3.1415" xyz="-0.03 0.02 -0.103"/>
+		</visual>
+	</link>
+	<gazebo reference="left_back_shank_link">
+		<kp>10000000.0</kp>
+		<kd>10000000.0</kd>
+		<mu1>1000.0</mu1>
+		<mu2>1000.0</mu2>
+	</gazebo>
+	<joint name="lh_upper_leg_joint" type="revolute">
+		<axis xyz="1 0 0"/>
+		<limit effort="1000.0" lower="-3.0" upper="3.0" velocity="5"/>
+		<parent link="left_back_thigh_link"/>
+		<child link="left_back_shank_link"/>
+		<origin xyz="-0.1 0 -0.262"/>
+	</joint>
+<joint name="camera_joint" type="fixed">
+    <origin rpy="0 0 -1.57075" xyz="0.0 -0.35 0.05"/>
+    <parent link="base_body_link"/>
+    <child link="camera_link"/>
+  </joint>
+  <link name="camera_link">
+    <inertial>
+      <mass value="0.200"/>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <inertia ixx="5.8083e-4" ixy="0" ixz="0" iyy="3.0833e-5" iyz="0" izz="5.9083e-4"/>
+    </inertial>
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="package://hector_sensors_description/meshes/asus_camera/asus_camera_simple.dae"/>
+      </geometry>
+    </visual>
+<collision>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="package://hector_sensors_description/meshes/asus_camera/asus_camera_simple.dae"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint name="camera_depth_joint" type="fixed">
+    <origin rpy="0 0 0" xyz="0.0 0.049 0.0"/>
+    <parent link="camera_link"/>
+    <child link="camera_depth_frame"/>
+  </joint>
+  <link name="camera_depth_frame"/>
+  <joint name="camera_depth_optical_joint" type="fixed">
+    <origin rpy="-1.57079632679 0.0 -1.57079632679" xyz="0 0 0"/>
+    <parent link="camera_depth_frame"/>
+    <child link="camera_depth_optical_frame"/>
+  </joint>
+  <link name="camera_depth_optical_frame"/>
+  <joint name="camera_rgb_joint" type="fixed">
+    <origin rpy="0 0 0" xyz="0.0 0.022 0.0"/>
+    <parent link="camera_link"/>
+    <child link="camera_rgb_frame"/>
+  </joint>
+  <link name="camera_rgb_frame"/>
+  <joint name="camera_rgb_optical_joint" type="fixed">
+    <origin rpy="-1.57079632679 0.0 -1.57079632679" xyz="0 0 0"/>
+    <parent link="camera_rgb_frame"/>
+    <child link="camera_rgb_optical_frame"/>
+  </joint>
+  <link name="camera_rgb_optical_frame"/>
+  <!-- ASUS Xtion PRO camera for simulation -->
+  <gazebo reference="camera_depth_frame">
+    <sensor name="camera" type="depth">
+      <update_rate>20</update_rate>
+      <camera>
+        <horizontal_fov>1.09606677025</horizontal_fov>
+        <image>
+          <format>R8G8B8</format>
+          <width>640</width>
+          <height>480</height>
+        </image>
+        <clip>
+          <near>0.5</near>
+          <far>9</far>
+        </clip>
+      </camera>
+      <plugin filename="libgazebo_ros_openni_kinect.so" name="camera_camera_controller">
+        <imageTopicName>camera/rgb/image_raw</imageTopicName>
+        <cameraInfoTopicName>camera/rgb/camera_info</cameraInfoTopicName>
+        <depthImageTopicName>camera/depth/image_raw</depthImageTopicName>
+        <depthImageCameraInfoTopicName>camera/depth/camera_info</depthImageCameraInfoTopicName>
+        <pointCloudTopicName>camera/depth/points</pointCloudTopicName>
+        <frameName>camera_depth_optical_frame</frameName>
+      </plugin>
+    </sensor>
+  </gazebo>
+<gazebo>
+    <plugin filename="libhector_gazebo_ros_imu.so" name="imu_controller">
+      <updateRate>50.0</updateRate>
+      <bodyName>imu_link</bodyName>
+      <topicName>imu/data</topicName>
+      <accelDrift>0.005 0.005 0.005</accelDrift>
+      <accelGaussianNoise>0.005 0.005 0.005</accelGaussianNoise>
+      <rateDrift>0.005 0.005 0.005 </rateDrift>
+      <rateGaussianNoise>0.005 0.005 0.005 </rateGaussianNoise>
+      <headingDrift>0.005</headingDrift>
+      <headingGaussianNoise>0.005</headingGaussianNoise>
+    </plugin>
+  </gazebo>
+  <link name="imu_link">
+    <inertial>
+      <mass value="0.001"/>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <inertia ixx="1e-09" ixy="0.0" ixz="0.0" iyy="1e-09" iyz="0.0" izz="1e-09"/>
+    </inertial>
+  </link>
+  <joint name="imu_joint" type="fixed">
+    <parent link="base_body_link"/>
+    <child link="imu_link"/>
+  </joint>
+
+	<transmission name="left_back_tran2">
+		<type>transmission_interface/SimpleTransmission</type>
+		<joint name="lh_upper_leg_joint">
+			<hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+		</joint>
+		<actuator name="lh_upper_leg_joint_motor">
+			<mechanicalReduction>1</mechanicalReduction>
+		</actuator>
+	</transmission>
+
+	<link name="left_back_foot_link">
+		<inertial>
+			<origin rpy="1.57075 0 0" xyz="-0.0315 -0.025 -0.247"/>
+			<mass value="1" />
+			<inertia ixx="10.318125" ixy="0.000000002293" ixz="0.000001655262" iyy="6.1660505" iyz="0.000000009906" izz="6.1660535"/>
+		</inertial>
+		
+		<collision>
+			<origin rpy="1.57075 0 0" xyz="-0.0315 -0.025 -0.247"/>
+			<geometry>
+				<mesh filename="package://quadruped_project/models/meshes/foot_rev01.dae"/>
+			</geometry>
+		</collision>
+		<visual>
+			<geometry>
+				<mesh filename="package://quadruped_project/models/meshes/foot_rev01.dae"/>
+			</geometry>
+			<origin rpy="1.57075 0 0" xyz="-0.0315 -0.025 -0.247"/>
+		</visual>
+	</link>
+	<gazebo reference="left_back_foot_link">
+		<kp>10000000.0</kp>
+		<kd>10000000.0</kd>
+		<mu1>1000.0</mu1>
+		<mu2>1000.0</mu2>
+	</gazebo>
+	<joint name="left_back_foot_joint" type="fixed">
+		<parent link="left_back_shank_link"/>
+		<child link="left_back_foot_link"/>
+		<origin xyz="0 0 0" rpy="0 0 0" />
+	</joint>
+	
+	<link name="left_front_shoulder_link">
+		<inertial>
+			<origin rpy="1.57075 3.1415 0" xyz="0 0 0"/>
+			<mass value="20" />
+			<inertia ixx="1370.901120" ixy="0.000000333347" ixz="7.898235" iyy="1090.581376" iyz="0.000001537936" izz="303.707648"/>
+		</inertial>
+		
+		<collision>
+			<origin rpy="1.57075 3.1415 0" xyz="0 0 0"/>
+			<geometry>
+				<mesh filename="package://quadruped_project/models/meshes/shoulder_rev01.dae"/>
+			</geometry>
+		</collision>
+		<visual>
+			<geometry>
+				<mesh filename="package://quadruped_project/models/meshes/shoulder_rev01.dae"/>
+			</geometry>
+			<origin rpy="1.57075 3.1415 0" xyz="0 0 0"/>
+		</visual>
+	</link>
+
+	<gazebo reference="left_front_shoulder_link">
+		<kp>10000000.0</kp>
+		<kd>10000000.0</kd>
+		<mu1>1000.0</mu1>
+		<mu2>1000.0</mu2>
+	</gazebo>
+
+	<joint name="left_front_shoulder_joint" type="fixed">
+		<parent link="base_body_link"/>
+		<child link="left_front_shoulder_link"/>
+		<origin xyz="-0.15 0.2 0.05" rpy="0 0 0" />
+	</joint>
+	
+	<link name="left_front_thigh_link">
+		<inertial>
+			<origin rpy="1.57075 0 3.1415" xyz="-0.08 0.028 -0.11"/>
+			<mass value="20" />
+			<inertia ixx="4243.598592" ixy="839.043008" ixz="0.003623758789" iyy="525.609024" iyz="0.006399090332" izz="4577.473536"/>
+		</inertial>
+		
+		<collision>
+			<origin rpy="1.57075 0 3.1415" xyz="-0.08 0.028 -0.11"/>
+			<geometry>
+				<mesh filename="package://quadruped_project/models/meshes/thigh_rev01.dae"/>
+			</geometry>
+		</collision>
+		<visual>
+			<geometry>
+				<mesh filename="package://quadruped_project/models/meshes/thigh_rev01.dae"/>
+			</geometry>
+			<origin rpy="1.57075 0 3.1415" xyz="-0.08 0.028 -0.11"/>
+		</visual>
+	</link>
+	<gazebo reference="left_front_thigh_link">
+		<kp>10000000.0</kp>
+		<kd>10000000.0</kd>
+		<mu1>1000.0</mu1>
+		<mu2>1000.0</mu2>
+	</gazebo>
+	<joint name="lf_hip_joint" type="revolute">
+		<axis xyz="1 0 0"/>
+		<limit effort="1000.0" lower="-1.5" upper="1.5" velocity="5"/>
+		<parent link="left_front_shoulder_link"/>
+		<child link="left_front_thigh_link"/>
+		<origin xyz="0 0.149 0.002" rpy="0 0 0" />
+	</joint>
+
+	<transmission name="left_front_tran1">
+		<type>transmission_interface/SimpleTransmission</type>
+		<joint name="lf_hip_joint">
+			<hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+		</joint>
+		<actuator name="lf_hip_joint_motor">
+			<mechanicalReduction>1</mechanicalReduction>
+		</actuator>
+	</transmission>
+
+	<link name="left_front_shank_link">
+		<inertial>
+			<origin rpy="1.57075 0 3.1415" xyz="-0.03 0.02 -0.103"/>
+			<mass value="20" />
+			<inertia ixx="990.160768" ixy="24.015334" ixz="0.000000307513" iyy="23.989654" iyz="0.000018340973" izz="990.223104"/>
+		</inertial>
+		
+		<collision>
+			<origin rpy="1.57075 0 3.1415" xyz="-0.03 0.02 -0.103"/>
+			<geometry>
+				<mesh filename="package://quadruped_project/models/meshes/shank_rev01.dae"/>
+			</geometry>
+		</collision>
+		<visual>
+			<geometry>
+				<mesh filename="package://quadruped_project/models/meshes/shank_rev01.dae"/>
+			</geometry>
+			<origin rpy="1.57075 0 3.1415" xyz="-0.03 0.02 -0.103"/>
+		</visual>
+	</link>
+	<gazebo reference="left_front_shank_link">
+		<kp>10000000.0</kp>
+		<kd>10000000.0</kd>
+		<mu1>1000.0</mu1>
+		<mu2>1000.0</mu2>
+	</gazebo>
+	<joint name="lf_upper_leg_joint" type="revolute">
+		<axis xyz="1 0 0"/>
+		<limit effort="1000.0" lower="-3.0" upper="3.0" velocity="5"/>
+		<parent link="left_front_thigh_link"/>
+		<child link="left_front_shank_link"/>
+		<origin xyz="-0.1 0 -0.262"/>
+	</joint>
+
+	<transmission name="left_front_tran2">
+		<type>transmission_interface/SimpleTransmission</type>
+		<joint name="lf_upper_leg_joint">
+			<hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+		</joint>
+		<actuator name="lf_upper_leg_joint_motor">
+			<mechanicalReduction>1</mechanicalReduction>
+		</actuator>
+	</transmission>
+
+	<link name="left_front_foot_link">
+		<inertial>
+			<origin rpy="1.57075 0 0" xyz="-0.0315 -0.025 -0.247"/>
+			<mass value="1" />
+			<inertia ixx="10.318125" ixy="0.000000002293" ixz="0.000001655262" iyy="6.1660505" iyz="0.000000009906" izz="6.1660535"/>
+		</inertial>
+		
+		<collision>
+			<origin rpy="1.57075 0 0" xyz="-0.0315 -0.025 -0.247"/>
+			<geometry>
+				<mesh filename="package://quadruped_project/models/meshes/foot_rev01.dae"/>
+			</geometry>
+		</collision>
+		<visual>
+			<geometry>
+				<mesh filename="package://quadruped_project/models/meshes/foot_rev01.dae"/>
+			</geometry>
+			<origin rpy="1.57075 0 0" xyz="-0.0315 -0.025 -0.247"/>
+		</visual>
+	</link>
+	<gazebo reference="left_front_foot_link">
+		<kp>10000000.0</kp>
+		<kd>10000000.0</kd>
+		<mu1>1000.0</mu1>
+		<mu2>1000.0</mu2>
+	</gazebo>
+	<joint name="left_front_foot_joint" type="fixed">
+		<parent link="left_front_shank_link"/>
+		<child link="left_front_foot_link"/>
+		<origin xyz="0 0 0" rpy="0 0 0" />
+	</joint>
+
+<gazebo>
+    <plugin filename="libgazebo_ros_p3d.so" name="p3d_base_controller">
+      <alwaysOn>true</alwaysOn>
+      <updateRate>10.0</updateRate>
+      <bodyName>base_body_link</bodyName>
+      <topicName>odom/ground_truth</topicName>
+      <gaussianNoise>0.01</gaussianNoise>
+      <frameName>world</frameName>
+      <xyzOffsets>0 0 0</xyzOffsets>
+      <rpyOffsets>0 0 0</rpyOffsets>
+    </plugin>
+  </gazebo>
+  <gazebo>
+    <plugin filename="libgazebo_ros_control.so" name="gazebo_ros_control">
+      <legacyModeNS>true</legacyModeNS>
+    </plugin>
+  </gazebo>
+
+</robot>
+
